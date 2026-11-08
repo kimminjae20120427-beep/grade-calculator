@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기말고사 목표 점수 계산기</title>
+
+<style>
+body{
+font-family:'Malgun Gothic',sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+}
+
+label{
+display:block;
+margin-top:12px;
+font-weight:bold;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:8px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#0078ff;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#f5f5f5;
+border-radius:8px;
+display:none;
+}
+
+.info{
+margin-top:10px;
+padding:10px;
+background:#eef5ff;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📚 기말고사 목표 점수 계산기</h1>
+
+<label>과목</label>
+
+<select id="subject" onchange="updateSubject()">
+<option value="math">수학</option>
+<option value="korean">국어</option>
+<option value="science">과학</option>
+<option value="history">역사</option>
+<option value="english">영어</option>
+<option value="ethics">도덕</option>
+<option value="chinese">중국어</option>
+</select>
+
+<div id="subjectInfo" class="info"></div>
+
+<label>중간고사 점수</label>
+<input type="number" id="midterm">
+
+<label>수행평가 점수</label>
+<input type="number" id="performance">
+
+<button onclick="calculate()">
+등급별 필요 기말 점수 계산
+</button>
+
+<div id="result" class="result"></div>
+
+</div>
+
+<script>
+
+const subjects = {
+
+math:{
+name:"수학",
+mid:0.25,
+final:0.25,
+perfMax:50,
+hasMid:true
+},
+
+korean:{
+name:"국어",
+mid:0.30,
+final:0.30,
+perfMax:40,
+hasMid:true
+},
+
+science:{
+name:"과학",
+mid:0.30,
+final:0.30,
+perfMax:40,
+hasMid:true
+},
+
+history:{
+name:"역사",
+mid:0,
+final:0.60,
+perfMax:40,
+hasMid:false
+},
+
+english:{
+name:"영어",
+mid:0,
+final:0.30,
+perfMax:70,
+hasMid:false
+},
+
+ethics:{
+name:"도덕",
+mid:0,
+final:0.60,
+perfMax:40,
+hasMid:false
+},
+
+chinese:{
+name:"중국어",
+mid:0,
+final:0.80,
+perfMax:20,
+hasMid:false
+}
+
+};
+
+const grades = [
+{ grade:"A", score:89.5 },
+{ grade:"B", score:79.5 },
+{ grade:"C", score:69.5 },
+{ grade:"D", score:59.5 }
+];
+
+function updateSubject(){
+
+const s =
+subjects
